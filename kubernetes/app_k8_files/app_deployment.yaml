@@ -35,15 +35,3 @@ spec:
             limits:
               cpu: 250m
               memory: 500Mi
-          livenessProbe:   # Sondeo de Liveness (verifica si el contenedor está vivo)
-            httpGet:
-              path: /health # Ruta de verificación de salud de tu aplicación (ajusta si es necesario)
-              port: 80
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:  # Sondeo de Readiness (verifica si el contenedor está listo para recibir tráfico)
-            httpGet:
-              path: /health # Ruta de verificación de salud de tu aplicación (ajusta si es necesario)
-              port: 80
-            initialDelaySeconds: 15
-            periodSeconds: 5

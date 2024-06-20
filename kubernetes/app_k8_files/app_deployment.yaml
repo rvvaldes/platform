@@ -4,7 +4,7 @@ metadata:
   name: app
   namespace: platform
 spec:
-  replicas: 1
+  replicas: 1 
   selector:
     matchLabels:
       app: app
@@ -15,23 +15,35 @@ spec:
     spec:
       containers:
         - name: app
-          image: rvvaldes/platform:latest # Imagen construida con el Dockerfile de la app
+          image: rvvaldes/platform:latest
           ports:
             - containerPort: 80
           env:
             - name: DATABASE_URL
-              value: postgresql://user:password@postgres.monitoring:5432/mydatabase
+              value: postgresql://user:password@postgres.monitoring.svc.cluster.local:5432/mydatabase  # FQDN para el servicio de PostgreSQL
             - name: SECRET_KEY_JWT
               valueFrom:
                 secretKeyRef:
                   name: app-secret
                   key: jwt-secret
             - name: CORS_URL
-              value: http://front:8080 # Referencia al servicio 'front'
+              value: http://front:8080  # Referencia al servicio 'front' por nombre
           resources:
             requests:
-              cpu: 150m
-              memory: 250M
+              cpu: 100m     # Valores de recursos más conservadores para comenzar
+              memory: 128Mi 
             limits:
               cpu: 250m
-              memory: 500M
+              memory: 500Mi
+          livenessProbe:   # Sondeo de Liveness (verifica si el contenedor está vivo)
+            httpGet:
+              path: /health # Ruta de verificación de salud de tu aplicación (ajusta si es necesario)
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:  # Sondeo de Readiness (verifica si el contenedor está listo para recibir tráfico)
+            httpGet:
+              path: /health # Ruta de verificación de salud de tu aplicación (ajusta si es necesario)
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 5

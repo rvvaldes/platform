@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  namespace: platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app
+          image: rvvaldes/platform:latest # Imagen construida con el Dockerfile de la app
+          ports:
+            - containerPort: 80
+          env:
+            - name: DATABASE_URL
+              value: postgresql://user:password@postgres.monitoring:5432/mydatabase
+            - name: SECRET_KEY_JWT
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: jwt-secret
+            - name: CORS_URL
+              value: http://front:8080 # Referencia al servicio 'front'
+          resources:
+            requests:
+              cpu: 150m
+              memory: 250M
+            limits:
+              cpu: 250m
+              memory: 500M

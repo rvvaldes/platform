@@ -6,7 +6,7 @@ metadata:
   labels:
     app: postgres
 spec:
-  replicas: 2  
+  replicas: 1
   selector:
     matchLabels:
       app: postgres
@@ -37,11 +37,11 @@ spec:
               mountPath: /docker-entrypoint-initdb.d
           resources:  # Límites de recursos
             limits:
-              cpu: "250M"  # 500 milésimas de CPU (0.5 CPU)
-              memory: "400Mi"  # 1 Gigabyte de memoria
+              cpu: "500M"  # 500 milésimas de CPU (0.5 CPU)
+              memory: "1024Mi"  # 1 Gigabyte de memoria
             requests:
-              cpu: "150m"  # 200 milésimas de CPU (0.2 CPU)
-              memory: "250Mi"  # 512 Megabytes de memoria
+              cpu: "200m"  # 200 milésimas de CPU (0.2 CPU)
+              memory: "512Mi"  # 512 Megabytes de memoria
       volumes:
         - name: postgres-data
           persistentVolumeClaim:

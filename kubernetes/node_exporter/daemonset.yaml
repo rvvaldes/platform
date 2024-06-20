@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/name: node-exporter
   name: node-exporter
-  namespace: kube-system
+  namespace: monitoring
 spec:
   selector:
     matchLabels:
@@ -32,7 +32,7 @@ spec:
             protocol: TCP
         resources:
           limits:
-            cpu: 150m
+            cpu: 250m
             memory: 180Mi
           requests:
             cpu: 102m

@@ -2,32 +2,41 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: grafana
-  namespace: kube-system
+  namespace: monitoring
 spec:
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-    type: RollingUpdate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
   template:
+    metadata:
+      name: grafana
+      labels:
+        app: grafana
     spec:
       containers:
-        - image: grafana/grafana
-          name: grafana
-          ports:
-            - containerPort: 3000
-              protocol: TCP
-          resources:
-            limits:
-              cpu: 250m
-              memory: 250Mi
-            requests:
-              cpu: 100m
-              memory: 100Mi
-          volumeMounts:
-            - mountPath: /var/lib/grafana
-              name: data
-      restartPolicy: Always
+      - name: grafana
+        image: grafana/grafana:latest
+        ports:
+        - name: grafana
+          containerPort: 3000
+        resources:
+          limits:
+            memory: "250M"
+            cpu: "200m"
+          requests: 
+            memory: 150M
+            cpu: "100m"
+        volumeMounts:
+          - mountPath: /var/lib/grafana
+            name: grafana-storage
+          - mountPath: /etc/grafana/provisioning/datasources
+            name: grafana-datasources
+            readOnly: false
       volumes:
-        - emptyDir: {}
-          name: data
+        - name: grafana-storage
+          emptyDir: {}
+        - name: grafana-datasources
+          configMap:
+              defaultMode: 420
+              name: grafana-datasources

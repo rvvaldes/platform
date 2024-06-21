@@ -1,8 +1,8 @@
 {
   "name": "front-end",
   "private": true,
-  "version": "1.0.0",  # Añadir una versión inicial
-  "description": "Descripción breve de tu proyecto front-end",  
+  "version": "1.0.0",
+  "description": "Descripción breve de tu proyecto front-end",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,7 +10,7 @@
     "type-check": "tsc --noEmit",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx ./src",
     "format": "prettier --write ./src",
-    "start": "vite preview"  # Añadir un script 'start' estándar
+    "start": "vite preview" 
   },
   "dependencies": {
     "@blackbox-vision/ra-language-spanish": "^4.11.3",
@@ -22,7 +22,7 @@
     "@fullcalendar/timegrid": "^6.1.11",
     "react": "^18.2.0",
     "react-admin": "^4.16.0",
-    "react-dom": "^18.2.0"  
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^18.16.1",
@@ -40,4 +40,3 @@
     "vite": "^4.3.9"
   }
 }
-

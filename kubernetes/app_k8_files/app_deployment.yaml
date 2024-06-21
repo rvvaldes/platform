@@ -20,7 +20,7 @@ spec:
             - containerPort: 80
           env:
             - name: DATABASE_URL
-              value: postgresql://user:password@postgres.monitoring.svc.cluster.local:5432/mydatabase  # FQDN para el servicio de PostgreSQL
+              value: postgresql://user:password@postgres.platform.svc.cluster.local:5432/mydatabase  # FQDN para el servicio de PostgreSQL
             - name: SECRET_KEY_JWT
               valueFrom:
                 secretKeyRef:

@@ -44,4 +44,4 @@ jobs:
         base64-kube-config: ${{ secrets.KUBECONFIG }}
     - name: Deploy to cluster    
       run: |
-        kubectl apply -f kubernetes/app_k8_files/.
+        kubectl apply -f kubernetes/app_k8_files/app_deployment.yaml --force

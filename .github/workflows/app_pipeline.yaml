@@ -39,13 +39,13 @@ jobs:
     needs: build-and-push-docker-image
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Install kubectl
-      uses: tale/kubectl-action@v1
-      with:
-        base64-kube-config: ${{ secrets.KUBECONFIG }}
+      - name: Install kubectl
+        uses: tale/kubectl-action@v1
+        with:
+          base64-kube-config: ${{ secrets.KUBECONFIG }}
           
       - name: Deploy to cluster
         run: kubectl config view 

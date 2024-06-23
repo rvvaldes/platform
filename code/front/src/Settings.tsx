@@ -9,10 +9,6 @@ import {
   Tabs,
   TextField,
 } from "@mui/material";
-import LanguageIcon from "@mui/icons-material/Language";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import PhoneIcon from "@mui/icons-material/Phone";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { Title, useAuthenticated } from "react-admin";
 
 export const Settings = () => {

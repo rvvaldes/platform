@@ -1,0 +1,47 @@
+name: App_Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - 'kubernetes/**'
+      - 'code/app/**'  
+
+jobs:
+  build-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+      with:
+        context: code/front/.
+        file: ./Dockerfile
+        push: true
+        tags: rvvaldes/platform_frontend:latest
+
+  deploy-to-k8s-cluster:
+    runs-on: ubuntu-latest
+    needs: build-docker-image
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install kubectl
+      uses: tale/kubectl-action@v1
+      with:
+        base64-kube-config: ${{ secrets.KUBECONFIG }}
+    - name: Deploy to cluster    
+      run: |
+        kubectl apply -f kubernetes/front_k8_files/.

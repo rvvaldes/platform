@@ -1,0 +1,8 @@
+code/app/*.log
+code/app/*.pot
+code/app/*.pyc
+code/app/__pycache__/
+code/app/*/__pycache__
+.pytest_cache
+code/app/.pytest_cache
+code/app/*/.pytest_cache

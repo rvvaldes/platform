@@ -1,4 +1,4 @@
-name: App_Pipeline
+name: Front_Pipeline
 
 on:
   push:

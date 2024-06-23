@@ -4,10 +4,8 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - 'README.md'
-      - 'kubernetes/**'
-      - 'code/front/**'
+    paths:
+      - 'code/app/**'
 
 jobs:
   build-and-push-docker-image:
@@ -50,7 +48,7 @@ jobs:
           kubeconfig: ${{ secrets.KUBECONFIG }} 
           
       - name: Deploy to cluster
-        run: kubectl rollout restart deployment app -n platform  # Use rollout restart
+        run: kubectl rollout restart deployment app -n platform --insecure-skip-tls-verify  # Use rollout restart
 
       - name: Verify deployment
-        run: kubectl rollout status deployment app -n platform  # Wait for successful rollout
+        run: kubectl rollout status deployment app -n platform --insecure-skip-tls-verify # Wait for successful rollout

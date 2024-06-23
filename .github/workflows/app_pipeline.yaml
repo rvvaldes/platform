@@ -1,4 +1,4 @@
-name: App_Pipeline
+name: App Pipeline
 
 on:
   push:
@@ -7,41 +7,50 @@ on:
     paths-ignore:
       - 'README.md'
       - 'kubernetes/**'
-      - 'code/front/**'  
+      - 'code/front/**'
 
 jobs:
-  build-docker-image:
+  build-and-push-docker-image:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Log in to the Container registry
-      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2  # Use Buildx for faster/multi-platform builds
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
-      with:
-        context: code/app/.
-        file: code/app/Dockerfile
-        push: true
-        tags: rvvaldes/platform:latest
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          registry: docker.io  # Specify the registry
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-  deploy-to-k8s-cluster:
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: code/app 
+          push: true
+          tags: rvvaldes/platform:latest
+          # Consider adding cache for faster builds:
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy-to-kubernetes-cluster:
     runs-on: ubuntu-latest
-    needs: build-docker-image
-
+    needs: build-and-push-docker-image
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4  
 
-    - name: Install kubectl
-      uses: tale/kubectl-action@v1
-      with:
-        base64-kube-config: ${{ secrets.KUBECONFIG }}
-    - name: Deploy to cluster    
-      run: |
-        kubectl apply -f kubernetes/app_k8_files/app_deployment.yaml --force
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3   # More versatile kubectl setup
+        with:
+          version: 'latest'
+          kubeconfig: ${{ secrets.KUBECONFIG }} 
+          
+      - name: Deploy to cluster
+        run: kubectl rollout restart deployment app -n platform  # Use rollout restart
+
+      - name: Verify deployment
+        run: kubectl rollout status deployment app -n platform  # Wait for successful rollout

@@ -46,12 +46,9 @@ jobs:
         uses: tale/kubectl-action@v1
         with:
           base64-kube-config: ${{ secrets.KUBECONFIG }}
-          
+
       - name: Deploy to cluster
-        run: kubectl config view 
+        run: kubectl rollout restart deployment app -n platform --insecure-skip-tls-verify  # Use rollout restart
 
-#      - name: Deploy to cluster
-#        run: kubectl rollout restart deployment app -n platform --insecure-skip-tls-verify  # Use rollout restart
-
-#      - name: Verify deployment
-#        run: kubectl rollout status deployment app -n platform --insecure-skip-tls-verify # Wait for successful rollout
+      - name: Verify deployment
+        run: kubectl rollout status deployment app -n platform --insecure-skip-tls-verify # Wait for successful rollout

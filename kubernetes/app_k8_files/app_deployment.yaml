@@ -27,7 +27,7 @@ spec:
                   name: app-secret
                   key: jwt-secret
             - name: CORS_URL
-              value: *
+              value: "*"
           resources:
             requests:
               cpu: 100m     # Valores de recursos más conservadores para comenzar

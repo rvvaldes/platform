@@ -17,7 +17,7 @@ spec:
         - name: front
           image: rvvaldes/platform_frontend:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 3000
           resources:
             requests:
               cpu: 100m

@@ -8,6 +8,6 @@ spec:
     app: front
   ports:
     - protocol: TCP
-      port: 8080  # Puerto estándar HTTP en lugar de 8080
-      targetPort: 8080 
+      port: 3000  # Puerto estándar HTTP en lugar de 8080
+      targetPort: 3000 
   type: NodePort  #  O LoadBalancer si estás en la nube

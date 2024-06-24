@@ -27,7 +27,7 @@ spec:
                   name: app-secret
                   key: jwt-secret
             - name: CORS_URL
-              value: http://front:8080  # Referencia al servicio 'front' por nombre
+              value: http://0.0.0.0:0  # Referencia al servicio 'front' por nombre
           resources:
             requests:
               cpu: 100m     # Valores de recursos más conservadores para comenzar

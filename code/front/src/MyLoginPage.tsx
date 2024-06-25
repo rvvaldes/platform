@@ -91,7 +91,7 @@ export default function SignInSide() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Platform Eng. Sign in
+              Platform Engineering . Sign in
             </Typography>
             <Box
               component="form"
@@ -141,7 +141,6 @@ export default function SignInSide() {
                     Forgot password?
                   </Link>
                 </Grid>
-
               </Grid>
               <Copyright sx={{ mt: 5 }} />
             </Box>
